@@ -11,6 +11,7 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
+import PropertiesPanel from "../panels/PropertiesPanel";
 import "../styles/workflow.css";
 
 const initialNodes = [
@@ -50,6 +51,7 @@ const initialEdges = [
 ];
 
 function WorkflowEditor() {
+  const [selectedNode, setSelectedNode] = useState(null);
   const [nodes, setNodes, onNodesChange] =
     useNodesState(initialNodes);
 
@@ -57,6 +59,7 @@ function WorkflowEditor() {
     useEdgesState(initialEdges);
 
   const [nodeCounter, setNodeCounter] = useState(1);
+  
 
   const onConnect = useCallback(
     (connection) => {
@@ -72,6 +75,36 @@ function WorkflowEditor() {
     },
     [setEdges]
   );
+  const onNodeClick = useCallback((event,node)=>{
+    setSelectedNode(node);
+
+  },[]);
+  const updateNode = (nodeId,newLabel) =>{
+    setNodes((currentNodes) =>
+    currentNodes.map((node)=>
+    node.id === nodeId
+  ? {
+    ...node,
+    data:{
+      ...node.data,
+      label: newLabel,
+    },
+  }
+: node
+)
+);
+setSelectedNode((currentNode) =>
+currentNode && currentNode.id === nodeId
+? {
+  ...currentNode,
+  data: {
+    ...currentNode.data,
+    label: newLabel,
+  },
+}
+: currentNode
+);
+};
 
   const addNode = (nodeName) => {
     const newNode = {
@@ -140,27 +173,34 @@ function WorkflowEditor() {
         </button>
       </div>
 
-      <div className="workflow-canvas">
+      <div className="workflow-workspace">
 
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-          deleteKeyCode={["Backspace", "Delete"]}
-          nodesConnectable={true}
-          nodesDraggable={true}
-          elementsSelectable={true}
-        >
-          <Background gap={20} size={1} />
-          <Controls />
-          <MiniMap />
-        </ReactFlow>
+  <div className="workflow-canvas">
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      onNodeClick={onNodeClick}
+      fitView
+      deleteKeyCode={["Backspace", "Delete"]}
+      nodesConnectable={true}
+      nodesDraggable={true}
+      elementsSelectable={true}
+    >
+      <Background gap={20} size={1} />
+      <Controls />
+      <MiniMap />
+    </ReactFlow>
+  </div>
 
-      </div>
+  <PropertiesPanel
+    selectedNode={selectedNode}
+    onUpdateNode={updateNode}
+  />
 
+  </div>
       <div className="workflow-footer">
         <span>{nodes.length} nodes</span>
         <span>{edges.length} connections</span>

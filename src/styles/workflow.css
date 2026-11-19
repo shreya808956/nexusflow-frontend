@@ -171,3 +171,59 @@
   margin-left: auto;
   color: #4ade80;
 }
+
+/* workflow workspace layout */
+.workflow-workspace {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 280px;
+  gap: 16px;
+  align-items:stretch;
+}
+ /* properties panel */
+ .properties-panel {
+  background: #111827;
+  border: 1px solid #263247;
+  border-radius: 12px;
+  padding: 20px;
+  color: #e5e7eb;
+  min-width: 0;
+ }
+ .properties-panel h2{
+  font-size: 18px;
+  margin-bottom: 15px;
+ }
+ .empty-properties{
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.5;
+ }
+ .property-group{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+ }
+ .property-group label{
+  color: #9ca3af;
+  font-size: 12px;
+ }
+ .property-group input{
+  background: #0f172a;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  border-radius: 7px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  outline:none;
+ }
+ .property-group input :focus {
+  border-color:#60a5fa;
+ }
+
+ /* Responsive layout */
+ @media (max-width:900px) {
+  .workflow-workspace {
+    grid-template-columns : 1fr;
+  }
+ }
