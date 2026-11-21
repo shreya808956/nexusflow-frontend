@@ -79,49 +79,71 @@ function WorkflowEditor() {
     setSelectedNode(node);
 
   },[]);
-  const updateNode = (nodeId,newLabel) =>{
-    setNodes((currentNodes) =>
-    currentNodes.map((node)=>
-    node.id === nodeId
-  ? {
-    ...node,
-    data:{
-      ...node.data,
-      label: newLabel,
-    },
-  }
-: node
-)
-);
-setSelectedNode((currentNode) =>
-currentNode && currentNode.id === nodeId
-? {
-  ...currentNode,
-  data: {
-    ...currentNode.data,
-    label: newLabel,
-  },
-}
-: currentNode
-);
-};
+  
+const updateNode = (nodeId, updates) => {
+  // Keep compatibility with the existing node name input
+  const updatedData =
+    typeof updates === "string"
+      ? { label: updates }
+      : updates;
 
-  const addNode = (nodeName) => {
-    const newNode = {
-      id: `${nodeName.toLowerCase()}-${nodeCounter}`,
-      type: "default",
-      position: {
-        x: 180 + nodeCounter * 40,
-        y: 320 + nodeCounter * 25,
-      },
+  const applyUpdate = (node) => {
+    if (node.id !== nodeId) {
+      return node;
+    }
+
+    return {
+      ...node,
       data: {
-        label: `${nodeName} ${nodeCounter}`,
+        ...node.data,
+        ...updatedData,
+        config: {
+          ...(node.data.config || {}),
+          ...(updatedData.config || {}),
+        },
       },
     };
-
-    setNodes((currentNodes) => [...currentNodes, newNode]);
-    setNodeCounter((count) => count + 1);
   };
+
+  setNodes((currentNodes) =>
+    currentNodes.map(applyUpdate)
+  );
+
+  setSelectedNode((currentNode) =>
+    currentNode ? applyUpdate(currentNode) : currentNode
+  );
+};
+
+
+  
+const addNode = (nodeName) => {
+  const newNode = {
+    id: `${nodeName.toLowerCase()}-${nodeCounter}`,
+    type: "default",
+    position: {
+      x: 180 + nodeCounter * 40,
+      y: 320 + nodeCounter * 25,
+    },
+    data: {
+      label: `${nodeName} ${nodeCounter}`,
+
+      nodeType: nodeName.toLowerCase(),
+
+      config:
+        nodeName === "Sensor"
+          ? {
+              sensorType: "Temperature",
+              unit: "°C",
+              samplingInterval: 5,
+            }
+          : {},
+    },
+  };
+
+  setNodes((currentNodes) => [...currentNodes, newNode]);
+  setNodeCounter((count) => count + 1);
+};
+
 
   const resetWorkflow = () => {
     setNodes(initialNodes);

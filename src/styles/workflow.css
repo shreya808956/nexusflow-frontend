@@ -98,12 +98,12 @@
 /* Canvas */
 
 .workflow-canvas {
-  height: 570px;
-  width: 100%;
-  border: 1px solid #263247;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #0f172a;
+   height: 570px;
+   width: 100%;
+   border: 1px solid #334155;
+   border-radius: 12px;
+   overflow: hidden;
+   background-color: #0b1220;
 }
 
 /* React Flow nodes */
@@ -227,3 +227,73 @@
     grid-template-columns : 1fr;
   }
  }
+
+ /* Dark workflow canvas theme  */
+ .workflow-canvas .react-flow__background{
+  background-color: #080d19
+ }
+
+ .workflow-canvas .react-flow__background pattern circle{
+  fill:#475569;
+ }
+
+ /* connection lines */
+ .workflow-canvas .react-flow__edge-path {
+  stroke: #38bdf8;
+  stroke-width: 2.5;
+ }
+
+ /*Selected nodes */
+ .workflow-canvas .react-flow__node.selected {
+  border: 1px solid #38bdf8;
+  box-shadow: 0 0 0  3px rgba(56,189,248,0.2),
+              0 0 0  18px rgba(56,189,248,0.15);
+
+ }
+
+ /* Canvas controls */
+ .workflow-canvas .react-flow__controls {
+  background: #172033;
+  border: 1px solid #334155;
+ }
+ .workflow-canvas .react-flow__controls button {
+  background: #172033;
+  fill: #e2e8f0;
+  border-bottom: 1px solid #334155;
+ }
+ /* Mini map */
+ .workflow-canvas .react-flow__minimap {
+  background: #111827;
+  border: 1px solid #334155;
+ }
+
+
+/* Configuration section */
+
+.configuration-heading {
+  font-size: 15px;
+  color: #60a5fa;
+  margin-top: 25px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #263247;
+}
+
+/* Configuration dropdowns */
+
+.property-group select {
+  background: #0f172a;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  border-radius: 7px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+}
+
+.property-group select:focus {
+  border-color: #38bdf8;
+}
+
+
