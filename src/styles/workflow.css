@@ -296,4 +296,25 @@
   border-color: #38bdf8;
 }
 
+.property-group textarea {
+  background: #0f172a;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  border-radius: 7px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+}
+
+.property-group textarea:focus {
+  border-color: #38bdf8;
+}
+
+.property-group textarea::placeholder {
+  color: #64748b;
+}
 

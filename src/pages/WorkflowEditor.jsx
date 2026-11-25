@@ -114,8 +114,6 @@ const updateNode = (nodeId, updates) => {
   );
 };
 
-
-  
 const addNode = (nodeName) => {
   const newNode = {
     id: `${nodeName.toLowerCase()}-${nodeCounter}`,
@@ -136,6 +134,16 @@ const addNode = (nodeName) => {
               unit: "°C",
               samplingInterval: 5,
             }
+          : nodeName === "Filter"
+          ? {
+              operator: ">",
+              threshold: 30,
+            }
+          : nodeName === "Alert"
+          ? {
+              message: "Temperature exceeded the safe limit!",
+              severity: "Warning",
+            }
           : {},
     },
   };
@@ -143,7 +151,6 @@ const addNode = (nodeName) => {
   setNodes((currentNodes) => [...currentNodes, newNode]);
   setNodeCounter((count) => count + 1);
 };
-
 
   const resetWorkflow = () => {
     setNodes(initialNodes);

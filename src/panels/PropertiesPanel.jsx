@@ -5,6 +5,7 @@ function PropertiesPanel({ selectedNode, onUpdateNode }) {
     return (
       <div className="properties-panel">
         <h2>Properties</h2>
+
         <p className="empty-properties">
           Select a node to view its properties.
         </p>
@@ -17,12 +18,8 @@ function PropertiesPanel({ selectedNode, onUpdateNode }) {
     selectedNode.data.nodeType ||
     selectedNode.id.split("-")[0];
 
-  // Get existing sensor configuration or default values
-  const config = selectedNode.data.config || {
-    sensorType: "Temperature",
-    unit: "°C",
-    samplingInterval: 5,
-  };
+  // Get the selected node configuration
+  const config = selectedNode.data.config || {};
 
   return (
     <div className="properties-panel">
@@ -114,6 +111,97 @@ function PropertiesPanel({ selectedNode, onUpdateNode }) {
                 })
               }
             />
+          </div>
+        </>
+      )}
+
+      {/* Filter Configuration */}
+      {nodeType === "filter" && (
+        <>
+          <h3 className="configuration-heading">
+            Filter Configuration
+          </h3>
+
+          <div className="property-group">
+            <label>Comparison Operator</label>
+
+            <select
+              value={config.operator ?? ">"}
+              onChange={(event) =>
+                onUpdateNode(selectedNode.id, {
+                  config: {
+                    operator: event.target.value,
+                  },
+                })
+              }
+            >
+              <option value=">">Greater than (&gt;)</option>
+              <option value="<">Less than (&lt;)</option>
+              <option value=">=">Greater than or equal (&gt;=)</option>
+              <option value="<=">Less than or equal (&lt;=)</option>
+              <option value="==">Equal to (==)</option>
+            </select>
+          </div>
+
+          <div className="property-group">
+            <label>Threshold Value</label>
+
+            <input
+              type="number"
+              value={config.threshold ?? 30}
+              onChange={(event) =>
+                onUpdateNode(selectedNode.id, {
+                  config: {
+                    threshold: Number(event.target.value),
+                  },
+                })
+              }
+            />
+          </div>
+        </>
+      )}
+
+      {/* Alert Configuration */}
+      {nodeType === "alert" && (
+        <>
+          <h3 className="configuration-heading">
+            Alert Configuration
+          </h3>
+
+          <div className="property-group">
+            <label>Alert Message</label>
+
+            <textarea
+              value={config.message ?? "Temperature exceeded the safe limit!"}
+              onChange={(event) =>
+                onUpdateNode(selectedNode.id, {
+                  config: {
+                    message: event.target.value,
+                  },
+                })
+              }
+              placeholder="Enter alert message"
+              rows={4}
+            />
+          </div>
+
+          <div className="property-group">
+            <label>Severity Level</label>
+
+            <select
+              value={config.severity ?? "Warning"}
+              onChange={(event) =>
+                onUpdateNode(selectedNode.id, {
+                  config: {
+                    severity: event.target.value,
+                  },
+                })
+              }
+            >
+              <option value="Info">Info</option>
+              <option value="Warning">Warning</option>
+              <option value="Critical">Critical</option>
+            </select>
           </div>
         </>
       )}
